@@ -1,7 +1,5 @@
 # MyOwnPomodoro
 
-<img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="100" alt="App Icon">
-
 Современное Android-приложение для управления временем с использованием техники Pomodoro.
 
 ## Описание
