@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">My Own Pomodoro</string>
+    
+    <!-- Screen names -->
+    <string name="timer">Timer</string>
+    <string name="statistics">Statistics</string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
+    
+    <!-- Period types -->
+    <string name="work_period">Work Period</string>
+    <string name="short_break">Short Break</string>
+    <string name="long_break">Long Break</string>
+    
+    <!-- Period descriptions -->
+    <string name="work_period_description">Focus on your task and work without distractions</string>
+    <string name="short_break_description">Take a short break to rest</string>
+    <string name="long_break_description">Take a long break after several work periods</string>
+    
+    <!-- Timer states -->
+    <string name="running">Running</string>
+    <string name="paused">Paused</string>
+    <string name="ready">Ready</string>
+    <string name="completed">Completed</string>
+    
+    <!-- Timer control buttons -->
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="reset">Reset</string>
+    <string name="skip">Skip</string>
+    
+    <!-- Timer screen -->
+    <string name="completed_pomodoros">Completed: %1$d</string>
+    <string name="interrupted">Interrupted</string>
+    
+    <!-- Statistics screen -->
+    <string name="total_pomodoros">Total Pomodoros</string>
+    <string name="total_time">Total Time</string>
+    <string name="completion_rate">Completion Rate</string>
+    <string name="daily_average">Daily Average</string>
+    <string name="activity_chart">Activity Chart</string>
+    <string name="session_distribution">Session Distribution</string>
+    <string name="no_data_available">No data available</string>
+    <string name="work_periods">Work Periods</string>
+    <string name="short_breaks">Short Breaks</string>
+    <string name="long_breaks">Long Breaks</string>
+    
+    <!-- History screen -->
+    <string name="export_data">Export Data</string>
+    <string name="no_sessions_yet">No completed sessions yet</string>
+    <string name="complete_pomodoro_to_see_history">Complete at least one pomodoro to see history</string>
+    <string name="session_time_range">%1$s - %2$s</string>
+    
+    <!-- Settings screen -->
+    <string name="timer_settings">Timer Settings</string>
+    <string name="work_duration">Work Duration</string>
+    <string name="short_break_duration">Short Break Duration</string>
+    <string name="long_break_duration">Long Break Duration</string>
+    <string name="pomodoros_until_long_break">Pomodoros Until Long Break</string>
+    
+    <string name="automation_settings">Automation</string>
+    <string name="auto_start_breaks">Auto-start Breaks</string>
+    <string name="auto_start_breaks_description">Automatically start break timer after work period ends</string>
+    <string name="auto_start_pomodoros">Auto-start Pomodoros</string>
+    <string name="auto_start_pomodoros_description">Automatically start work timer after break ends</string>
+    
+    <string name="notification_settings">Notifications</string>
+    <string name="sound_enabled">Sound Notifications</string>
+    <string name="sound_enabled_description">Play sound when period ends</string>
+    <string name="vibration_enabled">Vibration</string>
+    <string name="vibration_enabled_description">Vibrate when period ends</string>
+    
+    <string name="interface_settings">Interface</string>
+    <string name="use_system_theme">Use System Theme</string>
+    <string name="use_system_theme_description">Follow Android theme settings</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="dark_theme_description">Use dark application theme</string>
+    <string name="keep_screen_on">Keep Screen On</string>
+    <string name="keep_screen_on_description">Prevent screen from turning off during timer</string>
+    
+    <!-- Notifications -->
+    <string name="notification_channel_name">Pomodoro Timer</string>
+    <string name="notification_channel_description">Pomodoro timer status notifications</string>
+</resources> 

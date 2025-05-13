@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Мой Помодоро</string>
+    
+    <!-- Названия экранов -->
+    <string name="timer">Таймер</string>
+    <string name="statistics">Статистика</string>
+    <string name="history">История</string>
+    <string name="settings">Настройки</string>
+    
+    <!-- Типы периодов -->
+    <string name="work_period">Рабочий период</string>
+    <string name="short_break">Короткий перерыв</string>
+    <string name="long_break">Длинный перерыв</string>
+    
+    <!-- Описания периодов -->
+    <string name="work_period_description">Сосредоточьтесь на задаче и работайте не отвлекаясь</string>
+    <string name="short_break_description">Сделайте короткий перерыв, чтобы отдохнуть</string>
+    <string name="long_break_description">Сделайте длинный перерыв после нескольких рабочих периодов</string>
+    
+    <!-- Состояния таймера -->
+    <string name="running">Идет отсчет</string>
+    <string name="paused">Пауза</string>
+    <string name="ready">Готов</string>
+    <string name="completed">Завершен</string>
+    
+    <!-- Кнопки управления таймером -->
+    <string name="start">Старт</string>
+    <string name="pause">Пауза</string>
+    <string name="reset">Сброс</string>
+    <string name="skip">Пропустить</string>
+    
+    <!-- Экран таймера -->
+    <string name="completed_pomodoros">Завершено: %1$d</string>
+    <string name="interrupted">Прерван</string>
+    
+    <!-- Экран статистики -->
+    <string name="total_pomodoros">Всего помидоров</string>
+    <string name="total_time">Общее время</string>
+    <string name="completion_rate">Завершаемость</string>
+    <string name="daily_average">В среднем в день</string>
+    <string name="activity_chart">График активности</string>
+    <string name="session_distribution">Распределение сессий</string>
+    <string name="no_data_available">Нет данных для отображения</string>
+    <string name="work_periods">Рабочие периоды</string>
+    <string name="short_breaks">Короткие перерывы</string>
+    <string name="long_breaks">Длинные перерывы</string>
+    
+    <!-- Экран истории -->
+    <string name="export_data">Экспорт данных</string>
+    <string name="no_sessions_yet">Пока нет завершенных сессий</string>
+    <string name="complete_pomodoro_to_see_history">Завершите хотя бы один помидор, чтобы увидеть историю</string>
+    <string name="session_time_range">%1$s - %2$s</string>
+    
+    <!-- Экран настроек -->
+    <string name="timer_settings">Настройки таймера</string>
+    <string name="work_duration">Продолжительность работы</string>
+    <string name="short_break_duration">Продолжительность короткого перерыва</string>
+    <string name="long_break_duration">Продолжительность длинного перерыва</string>
+    <string name="pomodoros_until_long_break">Помидоров до длинного перерыва</string>
+    
+    <string name="automation_settings">Автоматизация</string>
+    <string name="auto_start_breaks">Автоматически начинать перерывы</string>
+    <string name="auto_start_breaks_description">Автоматически запускать таймер перерыва после завершения рабочего периода</string>
+    <string name="auto_start_pomodoros">Автоматически начинать помидоры</string>
+    <string name="auto_start_pomodoros_description">Автоматически запускать рабочий таймер после завершения перерыва</string>
+    
+    <string name="notification_settings">Уведомления</string>
+    <string name="sound_enabled">Звуковые уведомления</string>
+    <string name="sound_enabled_description">Проигрывать звук при завершении периода</string>
+    <string name="vibration_enabled">Вибрация</string>
+    <string name="vibration_enabled_description">Вибрировать при завершении периода</string>
+    
+    <string name="interface_settings">Интерфейс</string>
+    <string name="dark_theme">Темная тема</string>
+    <string name="dark_theme_description">Использовать темную тему приложения</string>
+    <string name="keep_screen_on">Держать экран включенным</string>
+    <string name="keep_screen_on_description">Не выключать экран во время работы таймера</string>
+    
+    <!-- Уведомления -->
+    <string name="notification_channel_name">Таймер Помодоро</string>
+    <string name="notification_channel_description">Уведомления о состоянии таймера Помодоро</string>
+</resources> 
