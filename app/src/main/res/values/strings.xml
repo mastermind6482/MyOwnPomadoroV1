@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My Own Pomodoro</string>
+    <string name="app_name">MyOwnPomodoro</string>
     
     <!-- Названия экранов -->
     <string name="timer">Таймер</string>
@@ -8,37 +8,39 @@
     <string name="history">История</string>
     <string name="settings">Настройки</string>
     
-    <!-- Типы периодов -->
+    <!-- Состояния таймера -->
+    <string name="running">В процессе</string>
+    <string name="paused">Пауза</string>
+    <string name="ready">Готов</string>
+    <string name="completed">Завершено</string>
+    <string name="interrupted">Прерван</string>
+    
+    <!-- Периоды -->
     <string name="work_period">Рабочий период</string>
     <string name="short_break">Короткий перерыв</string>
     <string name="long_break">Длинный перерыв</string>
     
     <!-- Описания периодов -->
-    <string name="work_period_description">Сосредоточьтесь на задаче и работайте не отвлекаясь</string>
-    <string name="short_break_description">Сделайте короткий перерыв, чтобы отдохнуть</string>
-    <string name="long_break_description">Сделайте длинный перерыв после нескольких рабочих периодов</string>
+    <string name="work_period_description">Сосредоточьтесь на задаче. Избегайте отвлечений и многозадачности.</string>
+    <string name="short_break_description">Сделайте короткий перерыв. Встаньте, потянитесь, отдохните от экрана.</string>
+    <string name="long_break_description">Время для длинного перерыва. Отдохните, прогуляйтесь или перекусите.</string>
     
-    <!-- Состояния таймера -->
-    <string name="running">Идет отсчет</string>
-    <string name="paused">Пауза</string>
-    <string name="ready">Готов</string>
-    <string name="completed">Завершен</string>
-    
-    <!-- Кнопки управления таймером -->
+    <!-- Кнопки управления -->
     <string name="start">Старт</string>
     <string name="pause">Пауза</string>
     <string name="reset">Сброс</string>
     <string name="skip">Пропустить</string>
     
-    <!-- Экран таймера -->
-    <string name="completed_pomodoros">Завершено: %1$d</string>
-    <string name="interrupted">Прерван</string>
-    
-    <!-- Экран статистики -->
+    <!-- Статистика -->
+    <string name="completed_pomodoros">Выполнено: %1$d</string>
+    <string name="total_work_time">Общее рабочее время</string>
+    <string name="daily_average">Среднее за день</string>
+    <string name="best_day">Лучший день</string>
+    <string name="current_streak">Текущая серия</string>
+    <string name="longest_streak">Самая длинная серия</string>
     <string name="total_pomodoros">Всего помидоров</string>
     <string name="total_time">Общее время</string>
     <string name="completion_rate">Завершаемость</string>
-    <string name="daily_average">В среднем в день</string>
     <string name="activity_chart">График активности</string>
     <string name="session_distribution">Распределение сессий</string>
     <string name="no_data_available">Нет данных для отображения</string>
@@ -52,34 +54,54 @@
     <string name="complete_pomodoro_to_see_history">Завершите хотя бы один помидор, чтобы увидеть историю</string>
     <string name="session_time_range">%1$s - %2$s</string>
     
-    <!-- Экран настроек -->
-    <string name="timer_settings">Настройки таймера</string>
-    <string name="work_duration">Продолжительность работы</string>
-    <string name="short_break_duration">Продолжительность короткого перерыва</string>
-    <string name="long_break_duration">Продолжительность длинного перерыва</string>
+    <!-- Настройки -->
+    <string name="work_duration">Длительность рабочего периода</string>
+    <string name="short_break_duration">Длительность короткого перерыва</string>
+    <string name="long_break_duration">Длительность длинного перерыва</string>
+    <string name="periods_until_long_break">Периодов до длинного перерыва</string>
     <string name="pomodoros_until_long_break">Помидоров до длинного перерыва</string>
-    
-    <string name="automation_settings">Автоматизация</string>
-    <string name="auto_start_breaks">Автоматически начинать перерывы</string>
-    <string name="auto_start_breaks_description">Автоматически запускать таймер перерыва после завершения рабочего периода</string>
-    <string name="auto_start_pomodoros">Автоматически начинать помидоры</string>
-    <string name="auto_start_pomodoros_description">Автоматически запускать рабочий таймер после завершения перерыва</string>
-    
-    <string name="notification_settings">Уведомления</string>
+    <string name="auto_start_breaks">Автозапуск перерывов</string>
+    <string name="auto_start_pomodoros">Автозапуск рабочих периодов</string>
     <string name="sound_enabled">Звуковые уведомления</string>
-    <string name="sound_enabled_description">Проигрывать звук при завершении периода</string>
     <string name="vibration_enabled">Вибрация</string>
-    <string name="vibration_enabled_description">Вибрировать при завершении периода</string>
-    
-    <string name="interface_settings">Интерфейс</string>
-    <string name="use_system_theme">Использовать системную тему</string>
-    <string name="use_system_theme_description">Следовать настройкам темы Android</string>
+    <string name="sound_selection">Выбор звука</string>
+    <string name="theme">Тема</string>
     <string name="dark_theme">Темная тема</string>
-    <string name="dark_theme_description">Использовать темную тему приложения</string>
+    <string name="use_system_theme">Использовать системную тему</string>
     <string name="keep_screen_on">Держать экран включенным</string>
+    <string name="language">Язык</string>
+    
+    <!-- Настройки - категории -->
+    <string name="timer_settings">Настройки таймера</string>
+    <string name="automation_settings">Автоматизация</string>
+    <string name="notification_settings">Уведомления</string>
+    <string name="interface_settings">Интерфейс</string>
+    
+    <!-- Настройки - описания -->
+    <string name="auto_start_breaks_description">Автоматически запускать таймер перерыва после завершения рабочего периода</string>
+    <string name="auto_start_pomodoros_description">Автоматически запускать рабочий таймер после завершения перерыва</string>
+    <string name="sound_enabled_description">Проигрывать звук при завершении периода</string>
+    <string name="vibration_enabled_description">Вибрировать при завершении периода</string>
+    <string name="use_system_theme_description">Следовать настройкам темы Android</string>
+    <string name="dark_theme_description">Использовать темную тему приложения</string>
     <string name="keep_screen_on_description">Не выключать экран во время работы таймера</string>
     
     <!-- Уведомления -->
     <string name="notification_channel_name">Таймер Pomodoro</string>
     <string name="notification_channel_description">Уведомления о состоянии таймера Pomodoro</string>
+    
+    <!-- Онбординг -->
+    <string name="onboarding_welcome_title">Добро пожаловать в MyOwnPomodoro</string>
+    <string name="onboarding_welcome_desc">Повысьте свою продуктивность с помощью техники Pomodoro - проверенного метода управления временем</string>
+    <string name="onboarding_how_it_works_title">Как это работает</string>
+    <string name="onboarding_how_it_works_desc">Разделите работу на интервалы по 25 минут, называемые «помидорами», с короткими перерывами между ними</string>
+    <string name="onboarding_focus_title">Сосредоточьтесь на задаче</string>
+    <string name="onboarding_focus_desc">Во время рабочего периода сконцентрируйтесь только на одной задаче. Избегайте отвлечений и многозадачности</string>
+    <string name="onboarding_break_title">Отдыхайте регулярно</string>
+    <string name="onboarding_break_desc">После каждых 25 минут работы сделайте короткий перерыв в 5 минут. После 4 рабочих периодов - длинный перерыв в 15-30 минут</string>
+    <string name="onboarding_track_title">Отслеживайте прогресс</string>
+    <string name="onboarding_track_desc">Приложение автоматически записывает вашу активность и показывает статистику продуктивности</string>
+    <string name="onboarding_skip">Пропустить</string>
+    <string name="onboarding_next">Далее</string>
+    <string name="onboarding_start">Начать</string>
 </resources>

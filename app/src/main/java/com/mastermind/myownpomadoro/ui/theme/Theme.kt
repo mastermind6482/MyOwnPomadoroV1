@@ -9,7 +9,6 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -19,23 +18,45 @@ import androidx.core.view.WindowCompat
 import com.mastermind.myownpomadoro.data.local.preferences.UserPreferences
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFFE53935),
+    primary = PrimaryLight,
     onPrimary = Color.White,
-    secondary = Color(0xFF4CAF50),
-    tertiary = Color(0xFF2196F3),
-    background = Color(0xFFF5F5F5),
-    surface = Color.White,
-    onSurface = Color(0xFF121212)
+    primaryContainer = PrimaryLight.copy(alpha = 0.1f),
+    onPrimaryContainer = PrimaryLight,
+    secondary = SecondaryLight,
+    onSecondary = Color.White,
+    secondaryContainer = SecondaryLight.copy(alpha = 0.1f),
+    onSecondaryContainer = SecondaryLight,
+    tertiary = TertiaryLight,
+    onTertiary = Color.White,
+    tertiaryContainer = TertiaryLight.copy(alpha = 0.1f),
+    onTertiaryContainer = TertiaryLight,
+    background = BackgroundLight,
+    onBackground = OnBackgroundLight,
+    surface = SurfaceLight,
+    onSurface = OnBackgroundLight,
+    surfaceVariant = SurfaceLight.copy(alpha = 0.7f),
+    error = Color(0xFFB00020)
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFFEF5350),
+    primary = PrimaryDark,
     onPrimary = Color.White,
-    secondary = Color(0xFF66BB6A),
-    tertiary = Color(0xFF42A5F5),
-    background = Color(0xFF121212),
-    surface = Color(0xFF1E1E1E),
-    onSurface = Color.White
+    primaryContainer = PrimaryDark.copy(alpha = 0.2f),
+    onPrimaryContainer = PrimaryDark,
+    secondary = SecondaryDark,
+    onSecondary = Color.Black,
+    secondaryContainer = SecondaryDark.copy(alpha = 0.2f),
+    onSecondaryContainer = SecondaryDark,
+    tertiary = TertiaryDark,
+    onTertiary = Color.Black,
+    tertiaryContainer = TertiaryDark.copy(alpha = 0.2f),
+    onTertiaryContainer = TertiaryDark,
+    background = BackgroundDark,
+    onBackground = OnBackgroundDark,
+    surface = SurfaceDark,
+    onSurface = OnBackgroundDark,
+    surfaceVariant = SurfaceDark.copy(alpha = 0.7f),
+    error = Color(0xFFCF6679)
 )
 
 @Composable
@@ -62,7 +83,8 @@ fun MyOwnPomadoroTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            // Set status bar color to transparent for edge-to-edge design
+            window.statusBarColor = colorScheme.background.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !useDarkTheme
         }
     }
@@ -70,6 +92,7 @@ fun MyOwnPomadoroTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
+        shapes = Shapes,
         content = content
     )
 }

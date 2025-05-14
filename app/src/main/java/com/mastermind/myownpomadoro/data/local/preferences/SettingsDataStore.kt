@@ -36,6 +36,7 @@ class SettingsDataStore @Inject constructor(
         val USE_SYSTEM_THEME = booleanPreferencesKey("use_system_theme")
         val KEEP_SCREEN_ON = booleanPreferencesKey("keep_screen_on")
         val LANGUAGE = stringPreferencesKey("language")
+        val ONBOARDING_COMPLETED = booleanPreferencesKey("onboarding_completed")
     }
 
     // Получение настроек в виде Flow
@@ -53,8 +54,14 @@ class SettingsDataStore @Inject constructor(
             isDarkThemeEnabled = preferences[PreferencesKeys.DARK_THEME] ?: false,
             useSystemTheme = preferences[PreferencesKeys.USE_SYSTEM_THEME] ?: true,
             keepScreenOn = preferences[PreferencesKeys.KEEP_SCREEN_ON] ?: true,
-            language = preferences[PreferencesKeys.LANGUAGE] ?: "system"
+            language = preferences[PreferencesKeys.LANGUAGE] ?: "system",
+            onboardingCompleted = preferences[PreferencesKeys.ONBOARDING_COMPLETED] ?: false
         )
+    }
+
+    // Flow для отслеживания только статуса онбординга
+    val onboardingCompletedFlow: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[PreferencesKeys.ONBOARDING_COMPLETED] ?: false
     }
 
     // Обновление настроек
@@ -73,6 +80,7 @@ class SettingsDataStore @Inject constructor(
             preferences[PreferencesKeys.USE_SYSTEM_THEME] = settings.useSystemTheme
             preferences[PreferencesKeys.KEEP_SCREEN_ON] = settings.keepScreenOn
             preferences[PreferencesKeys.LANGUAGE] = settings.language
+            preferences[PreferencesKeys.ONBOARDING_COMPLETED] = settings.onboardingCompleted
         }
     }
 
@@ -152,6 +160,12 @@ class SettingsDataStore @Inject constructor(
     suspend fun updateLanguage(language: String) {
         context.dataStore.edit { preferences ->
             preferences[PreferencesKeys.LANGUAGE] = language
+        }
+    }
+
+    suspend fun updateOnboardingCompleted(completed: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[PreferencesKeys.ONBOARDING_COMPLETED] = completed
         }
     }
 } 

@@ -20,7 +20,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         
-        // Включаем поддержку векторных drawable
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -46,7 +45,6 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.6.1"
     }
     packaging {
         resources {

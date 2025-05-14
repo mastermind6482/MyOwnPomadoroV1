@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="960"
+    android:viewportHeight="960">
+    
+    <!-- 1. Круглый фон иконки -->
+    <path android:pathData="M480,480m-480,0a480,480 0,1 1,960 0a480,480 0,1 1,-960 0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="480"
+                android:centerY="480"
+                android:gradientRadius="480"
+                android:startColor="#F8F9FA"
+                android:endColor="#EEEEEE" />
+        </aapt:attr>
+    </path>
+    
+    <!-- Тень под помидором -->
+    <path
+        android:fillColor="#000000"
+        android:fillAlpha="0.08"
+        android:pathData="M460,645 A270,100 0,1 1,460.1 645Z" />
+    
+    <!-- 2. Помидор -->
+    <!-- Тело помидора -->
+    <path android:pathData="M480,440m-240,0a240,240 0,1 1,480 0a240,240 0,1 1,-480 0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="480"
+                android:centerY="400"
+                android:gradientRadius="240"
+                android:startColor="#F44336"
+                android:endColor="#D32F2F" />
+        </aapt:attr>
+    </path>
+    <!-- Блик на помидоре -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.3"
+        android:pathData="M380,280 A120,80 0,0 1,580 280 A120,80 0,0 1,380 280Z" />
+    
+    <!-- Хвостик помидора (зелень) -->
+    <path
+        android:fillColor="#26A69A"
+        android:pathData="M480,200
+                       L450,280 L480,260 L510,280 L480,200Z
+                       M480,200
+                       L430,240 Q480,250 530,240 L480,200Z"/>
+    
+    <!-- Пунктирная линия на помидоре (стилизация) -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeAlpha="0.7"
+        android:strokeWidth="12"
+        android:strokeLineCap="round"
+        android:pathData="M300,480 Q360,500 420,490 M450,485 Q510,470 570,460" />
+
+    <!-- Тень под часами (на помидоре) -->
+     <path
+        android:fillColor="#000000"
+        android:fillAlpha="0.1"
+        android:pathData="M620,630 A130,130 0,1 1,620.1 630Z" />
+
+    <!-- 3. Часы -->
+    <!-- Корпус часов -->
+    <path android:pathData="M620,580m-120,0a120,120 0,1 1,240 0a120,120 0,1 1,-240 0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="620"
+                android:centerY="580"
+                android:gradientRadius="120"
+                android:startColor="#2979FF"
+                android:endColor="#1E88E5" />
+        </aapt:attr>
+    </path>
+    <!-- Циферблат -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M620,580m-100,0a100,100 0,1 1,200 0a100,100 0,1 1,-200 0" />
+
+    <!-- Метки на циферблате -->
+    <group android:translateX="620" android:translateY="580">
+        <path android:fillColor="#1E88E5" android:pathData="M-5, -85 L5,-85 L5,-70 L-5,-70Z" /> <!-- 12 -->
+        <path android:fillColor="#1E88E5" android:pathData="M-5,70 L5,70 L5,85 L-5,85Z" />    <!-- 6 -->
+        <path android:fillColor="#1E88E5" android:pathData="M70,-5 L85,-5 L85,5 L70,5Z" />    <!-- 3 -->
+        <path android:fillColor="#1E88E5" android:pathData="M-85,-5 L-70,-5 L-70,5 L-85,5Z" /> <!-- 9 -->
+        
+        <path android:fillColor="#64B5F6" android:pathData="M-4, -60 L4,-60 L4,-50 L-4,-50Z" android:rotation="30"/>
+        <path android:fillColor="#64B5F6" android:pathData="M-4, -60 L4,-60 L4,-50 L-4,-50Z" android:rotation="60"/>
+        <path android:fillColor="#64B5F6" android:pathData="M-4, -60 L4,-60 L4,-50 L-4,-50Z" android:rotation="120"/>
+        <path android:fillColor="#64B5F6" android:pathData="M-4, -60 L4,-60 L4,-50 L-4,-50Z" android:rotation="150"/>
+    </group>
+
+    <!-- Стрелки часов -->
+    <path
+        android:fillColor="#1E88E5"
+        android:pathData="M620,580 L620,500 L610,500 L610,585 L630,585 L630,500 Z" 
+        android:transformPivotX="620dp" android:transformPivotY="580dp" android:rotation="30"/> <!-- Минутная -->
+    <path
+        android:fillColor="#1E88E5"
+        android:pathData="M620,580 L620,525 L612,525 L612,582 L628,582 L628,525 Z"
+        android:transformPivotX="620dp" android:transformPivotY="580dp" android:rotation="100"/> <!-- Часовая -->
+    <!-- Центральная точка -->
+    <path
+        android:fillColor="#1E88E5"
+        android:pathData="M620,580m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0" />
+
+</vector> 

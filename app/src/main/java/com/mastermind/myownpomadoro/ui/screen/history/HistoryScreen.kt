@@ -2,7 +2,11 @@ package com.mastermind.myownpomadoro.ui.screen.history
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,7 +20,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,9 +36,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -76,68 +83,93 @@ fun HistoryScreen(
                     .fillMaxSize()
                     .padding(16.dp)
             ) {
-                // Заголовок
-                Text(
-                    text = stringResource(R.string.history),
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                
-                Spacer(modifier = Modifier.height(8.dp))
-                
-                // Кнопка экспорта
+                // Заголовок и кнопка экспорта
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextButton(onClick = { viewModel.exportSessions() }) {
+                    Text(
+                        text = stringResource(R.string.history),
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    
+                    // Кнопка экспорта
+                    TextButton(
+                        onClick = { viewModel.exportSessions() },
+                        modifier = Modifier.padding(end = 8.dp)
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_export),
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
                         )
+                        Spacer(modifier = Modifier.size(4.dp))
                         Text(
                             text = stringResource(R.string.export_data),
-                            modifier = Modifier.padding(start = 8.dp)
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.labelLarge.copy(
+                                fontWeight = FontWeight.Medium
+                            )
                         )
                     }
                 }
                 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 
                 // Список сессий
                 if (uiState.sessions.isEmpty()) {
                     // Пустой список
-                    Column(
+                    Box(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                        contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_history),
-                            contentDescription = null,
-                            modifier = Modifier.height(64.dp),
-                            tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
-                        )
-                        
-                        Spacer(modifier = Modifier.height(16.dp))
-                        
-                        Text(
-                            text = stringResource(R.string.no_sessions_yet),
-                            style = MaterialTheme.typography.titleMedium,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-                        )
-                        
-                        Spacer(modifier = Modifier.height(8.dp))
-                        
-                        Text(
-                            text = stringResource(R.string.complete_pomodoro_to_see_history),
-                            style = MaterialTheme.typography.bodyMedium,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
-                        )
+                        ElevatedCard(
+                            modifier = Modifier.fillMaxWidth(0.8f),
+                            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp),
+                            colors = CardDefaults.elevatedCardColors(
+                                containerColor = MaterialTheme.colorScheme.surface
+                            )
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(24.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_history),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(72.dp),
+                                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+                                )
+                                
+                                Spacer(modifier = Modifier.height(16.dp))
+                                
+                                Text(
+                                    text = stringResource(R.string.no_sessions_yet),
+                                    style = MaterialTheme.typography.titleMedium.copy(
+                                        fontWeight = FontWeight.Medium
+                                    ),
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                
+                                Spacer(modifier = Modifier.height(8.dp))
+                                
+                                Text(
+                                    text = stringResource(R.string.complete_pomodoro_to_see_history),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                                )
+                            }
+                        }
                     }
                 } else {
                     // Список сессий сгруппированный по датам
@@ -160,18 +192,14 @@ fun SessionItem(
     onCalendarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    ElevatedCard(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = when (session.periodType) {
-                PeriodType.WORK -> MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
-                PeriodType.SHORT_BREAK -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f)
-                PeriodType.LONG_BREAK -> MaterialTheme.colorScheme.tertiary.copy(alpha = 0.1f)
-            }
-        ),
-        shape = MaterialTheme.shapes.medium
+            .padding(vertical = 6.dp),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
         Row(
             modifier = Modifier
@@ -179,6 +207,32 @@ fun SessionItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Индикатор типа сессии
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(MaterialTheme.shapes.medium)
+                    .padding(4.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = when (session.periodType) {
+                        PeriodType.WORK -> painterResource(id = R.drawable.ic_work)
+                        PeriodType.SHORT_BREAK -> painterResource(id = R.drawable.ic_break)
+                        PeriodType.LONG_BREAK -> painterResource(id = R.drawable.ic_break)
+                    },
+                    contentDescription = null,
+                    tint = when (session.periodType) {
+                        PeriodType.WORK -> MaterialTheme.colorScheme.primary
+                        PeriodType.SHORT_BREAK -> MaterialTheme.colorScheme.secondary
+                        PeriodType.LONG_BREAK -> MaterialTheme.colorScheme.tertiary
+                    },
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+            
+            Spacer(modifier = Modifier.size(12.dp))
+            
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = when (session.periodType) {
@@ -186,7 +240,14 @@ fun SessionItem(
                         PeriodType.SHORT_BREAK -> stringResource(R.string.short_break)
                         PeriodType.LONG_BREAK -> stringResource(R.string.long_break)
                     },
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Medium
+                    ),
+                    color = when (session.periodType) {
+                        PeriodType.WORK -> MaterialTheme.colorScheme.primary
+                        PeriodType.SHORT_BREAK -> MaterialTheme.colorScheme.secondary
+                        PeriodType.LONG_BREAK -> MaterialTheme.colorScheme.tertiary
+                    }
                 )
                 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -197,14 +258,22 @@ fun SessionItem(
                         session.startTime.format(DateTimeFormatter.ofPattern("HH:mm")),
                         session.endTime.format(DateTimeFormatter.ofPattern("HH:mm"))
                     ),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                 )
             }
             
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text = "${session.durationMinutes} мин",
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    color = when (session.periodType) {
+                        PeriodType.WORK -> MaterialTheme.colorScheme.primary
+                        PeriodType.SHORT_BREAK -> MaterialTheme.colorScheme.secondary
+                        PeriodType.LONG_BREAK -> MaterialTheme.colorScheme.tertiary
+                    }
                 )
                 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -224,27 +293,39 @@ fun SessionItem(
                 )
             }
             
-            // Добавляем кнопку добавления в календарь
-            IconButton(
-                onClick = onCalendarClick,
-                modifier = Modifier.size(48.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_calendar),
-                    contentDescription = "Добавить в календарь",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
+            Spacer(modifier = Modifier.size(8.dp))
             
-            // Существующая кнопка экспорта
-            IconButton(
-                onClick = onExportClick,
-                modifier = Modifier.size(48.dp)
+            // Кнопки действий
+            Row(
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_export),
-                    contentDescription = null
-                )
+                // Кнопка добавления в календарь
+                FilledTonalIconButton(
+                    onClick = onCalendarClick,
+                    modifier = Modifier.size(40.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_calendar),
+                        contentDescription = "Добавить в календарь",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+                
+                Spacer(modifier = Modifier.size(8.dp))
+                
+                // Кнопка экспорта
+                FilledTonalIconButton(
+                    onClick = onExportClick,
+                    modifier = Modifier.size(40.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_export),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
         }
     }

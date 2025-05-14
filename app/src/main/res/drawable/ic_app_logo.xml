@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="960"
+    android:viewportHeight="960">
+    
+    <!-- Фоновый круг с градиентом -->
+    <path android:pathData="M480,480m-440,0a440,440 0,1 1,880 0a440,440 0,1 1,-880 0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="480"
+                android:centerY="480"
+                android:gradientRadius="440"
+                android:startColor="#F8F9FA"
+                android:endColor="#EEEEEE" />
+        </aapt:attr>
+    </path>
+    
+    <!-- Внешнее кольцо таймера -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#E53935"
+        android:strokeWidth="40"
+        android:pathData="M480,480m-360,0a360,360 0,1 1,720 0a360,360 0,1 1,-720 0" />
+    
+    <!-- Прогресс таймера (75%) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#26A69A"
+        android:strokeWidth="40"
+        android:strokeLineCap="round"
+        android:pathData="M480,120A360,360 0,1 1,120,480" />
+    
+    <!-- Внутренний круг -->
+    <path android:pathData="M480,480m-300,0a300,300 0,1 1,600 0a300,300 0,1 1,-600 0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="480"
+                android:centerY="480"
+                android:gradientRadius="300"
+                android:startColor="#FFFFFF"
+                android:endColor="#F5F5F5" />
+        </aapt:attr>
+    </path>
+    
+    <!-- Тень для объема -->
+    <path
+        android:fillColor="#000000"
+        android:fillAlpha="0.05"
+        android:pathData="M480,480m-280,0a280,280 0,1 1,560 0a280,280 0,1 1,-560 0" />
+    
+    <!-- Центральный круг -->
+    <path android:pathData="M480,480m-30,0a30,30 0,1 1,60 0a30,30 0,1 1,-60 0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="480"
+                android:centerY="480"
+                android:gradientRadius="30"
+                android:startColor="#1E88E5"
+                android:endColor="#1565C0" />
+        </aapt:attr>
+    </path>
+    
+    <!-- Минутная стрелка -->
+    <path
+        android:fillColor="#E53935"
+        android:pathData="M470,480L470,230L490,230L490,480L470,480Z" />
+    
+    <!-- Часовая стрелка -->
+    <path
+        android:fillColor="#1E88E5"
+        android:pathData="M480,470L480,480L360,480L360,470L480,470Z" />
+    
+    <!-- Метки часов (12, 3, 6, 9) -->
+    <path
+        android:fillColor="#212121"
+        android:pathData="M470,200L490,200L490,240L470,240L470,200Z
+                         M720,470L720,490L680,490L680,470L720,470Z
+                         M470,720L490,720L490,680L470,680L470,720Z
+                         M240,470L240,490L280,490L280,470L240,470Z" />
+    
+    <!-- Маленькие метки для остальных часов -->
+    <path
+        android:fillColor="#757575"
+        android:pathData="M574,225L586,237L558,265L546,253L574,225Z
+                         M693,319L705,331L677,359L665,347L693,319Z
+                         M735,470L735,490L707,490L707,470L735,470Z
+                         M693,621L705,633L677,661L665,649L693,621Z
+                         M574,715L586,727L558,755L546,743L574,715Z
+                         M470,735L490,735L490,707L470,707L470,735Z
+                         M366,715L378,727L350,755L338,743L366,715Z
+                         M247,621L259,633L231,661L219,649L247,621Z
+                         M225,470L225,490L253,490L253,470L225,470Z
+                         M247,319L259,331L231,359L219,347L247,319Z
+                         M366,225L378,237L350,265L338,253L366,225Z
+                         M470,225L490,225L490,253L470,253L470,225Z" />
+    
+    <!-- Блики для объема -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.3"
+        android:pathData="M320,320A200,200 0,0 1,640 320L600,360A150,150 0,0 0,360 360Z" />
+</vector> 

@@ -22,20 +22,17 @@ import javax.inject.Inject
  */
 class BootCompletedReceiver : BroadcastReceiver() {
     
-    // Будем получать репозиторий через getter при выполнении onReceive
     private var timerRepository: TimerRepository? = null
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
-            // Получаем timerRepository из компонента приложения
             if (context.applicationContext is PomodoroApplication) {
                 // Ручное получение репозитория через сервис локатор
                 // Это безопаснее, чем Hilt с BroadcastReceiver
                 timerRepository = TimerRepositoryProvider.getTimerRepository(context)
             }
             
-            // Проверяем, был ли таймер запущен
             val pendingResult: PendingResult = goAsync()
             coroutineScope.launch {
                 try {

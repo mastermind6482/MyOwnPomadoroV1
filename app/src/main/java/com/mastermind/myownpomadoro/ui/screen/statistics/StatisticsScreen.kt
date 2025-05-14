@@ -12,10 +12,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -26,6 +28,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -64,7 +68,9 @@ fun StatisticsScreen(
                 // Заголовок
                 Text(
                     text = stringResource(R.string.statistics),
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 
@@ -73,155 +79,191 @@ fun StatisticsScreen(
                 // Карточки со статистикой
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     StatCard(
                         title = stringResource(R.string.total_pomodoros),
                         value = uiState.totalWorkSessions.toString(),
                         icon = R.drawable.ic_timer,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        color = MaterialTheme.colorScheme.primary
                     )
                     
                     StatCard(
                         title = stringResource(R.string.total_time),
                         value = "${uiState.totalWorkMinutes} мин",
                         icon = R.drawable.ic_time,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        color = MaterialTheme.colorScheme.secondary
                     )
                 }
                 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     StatCard(
                         title = stringResource(R.string.completion_rate),
                         value = "${uiState.completionRate}%",
                         icon = R.drawable.ic_check,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        color = MaterialTheme.colorScheme.tertiary
                     )
                     
                     StatCard(
                         title = stringResource(R.string.daily_average),
                         value = uiState.dailyAverage.toString(),
                         icon = R.drawable.ic_calendar,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
                 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(32.dp))
                 
                 // График активности
-                Text(
-                    text = stringResource(R.string.activity_chart),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                
-                Spacer(modifier = Modifier.height(16.dp))
-                
-                if (uiState.dailyStats.isEmpty()) {
-                    // Пустой график
-                    Box(
+                ElevatedCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp),
+                    colors = CardDefaults.elevatedCardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    )
+                ) {
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp),
-                        contentAlignment = Alignment.Center
+                            .padding(16.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.no_data_available),
-                            style = MaterialTheme.typography.bodyLarge,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                            text = stringResource(R.string.activity_chart),
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = MaterialTheme.colorScheme.onSurface
                         )
+                        
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        if (uiState.dailyStats.isEmpty()) {
+                            // Пустой график
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.no_data_available),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                                )
+                            }
+                        } else {
+                            // Отображаем график
+                            ActivityChart(
+                                dailyStats = uiState.dailyStats,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                            )
+                        }
                     }
-                } else {
-                    // Отображаем график
-                    ActivityChart(
-                        dailyStats = uiState.dailyStats,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                    )
                 }
                 
                 Spacer(modifier = Modifier.height(24.dp))
                 
                 // Круговая диаграмма распределения типов сессий
-                Text(
-                    text = stringResource(R.string.session_distribution),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                
-                Spacer(modifier = Modifier.height(16.dp))
-                
-                if (uiState.totalSessions == 0) {
-                    // Пустая диаграмма
-                    Box(
+                ElevatedCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp),
+                    colors = CardDefaults.elevatedCardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    )
+                ) {
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp),
-                        contentAlignment = Alignment.Center
+                            .padding(16.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.no_data_available),
-                            style = MaterialTheme.typography.bodyLarge,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                            text = stringResource(R.string.session_distribution),
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = MaterialTheme.colorScheme.onSurface
                         )
-                    }
-                } else {
-                    // Отображаем диаграмму
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        // Круговая диаграмма
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(200.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            PieChart(
-                                data = mapOf(
-                                    PeriodType.WORK to uiState.workSessionsCount,
-                                    PeriodType.SHORT_BREAK to uiState.shortBreakSessionsCount,
-                                    PeriodType.LONG_BREAK to uiState.longBreakSessionsCount
-                                ),
-                                modifier = Modifier.size(180.dp)
-                            )
-                        }
                         
-                        // Легенда
-                        Column(
-                            modifier = Modifier.weight(1f),
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            PieChartLegendItem(
-                                color = MaterialTheme.colorScheme.primary,
-                                label = stringResource(R.string.work_periods),
-                                value = "${uiState.workSessionsCount} (${uiState.workSessionsPercentage}%)"
-                            )
-                            
-                            Spacer(modifier = Modifier.height(8.dp))
-                            
-                            PieChartLegendItem(
-                                color = MaterialTheme.colorScheme.secondary,
-                                label = stringResource(R.string.short_breaks),
-                                value = "${uiState.shortBreakSessionsCount} (${uiState.shortBreakSessionsPercentage}%)"
-                            )
-                            
-                            Spacer(modifier = Modifier.height(8.dp))
-                            
-                            PieChartLegendItem(
-                                color = MaterialTheme.colorScheme.tertiary,
-                                label = stringResource(R.string.long_breaks),
-                                value = "${uiState.longBreakSessionsCount} (${uiState.longBreakSessionsPercentage}%)"
-                            )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        if (uiState.totalSessions == 0) {
+                            // Пустая диаграмма
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.no_data_available),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                                )
+                            }
+                        } else {
+                            // Отображаем диаграмму
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                // Круговая диаграмма
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(200.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    PieChart(
+                                        data = mapOf(
+                                            PeriodType.WORK to uiState.workSessionsCount,
+                                            PeriodType.SHORT_BREAK to uiState.shortBreakSessionsCount,
+                                            PeriodType.LONG_BREAK to uiState.longBreakSessionsCount
+                                        ),
+                                        modifier = Modifier.size(180.dp)
+                                    )
+                                }
+                                
+                                // Легенда
+                                Column(
+                                    modifier = Modifier.weight(1f),
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    PieChartLegendItem(
+                                        color = MaterialTheme.colorScheme.primary,
+                                        label = stringResource(R.string.work_periods),
+                                        value = "${uiState.workSessionsCount} (${uiState.workSessionsPercentage}%)"
+                                    )
+                                    
+                                    Spacer(modifier = Modifier.height(12.dp))
+                                    
+                                    PieChartLegendItem(
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        label = stringResource(R.string.short_breaks),
+                                        value = "${uiState.shortBreakSessionsCount} (${uiState.shortBreakSessionsPercentage}%)"
+                                    )
+                                    
+                                    Spacer(modifier = Modifier.height(12.dp))
+                                    
+                                    PieChartLegendItem(
+                                        color = MaterialTheme.colorScheme.tertiary,
+                                        label = stringResource(R.string.long_breaks),
+                                        value = "${uiState.longBreakSessionsCount} (${uiState.longBreakSessionsPercentage}%)"
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -238,14 +280,15 @@ fun StatCard(
     title: String,
     value: String,
     icon: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.primary
 ) {
-    Card(
+    ElevatedCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-        shape = MaterialTheme.shapes.medium
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
         Column(
             modifier = Modifier
@@ -253,27 +296,41 @@ fun StatCard(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(
-                painter = painterResource(id = icon),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
+            // Иконка в цветном круге
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(MaterialTheme.shapes.medium)
+                    .background(color.copy(alpha = 0.1f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = icon),
+                    contentDescription = null,
+                    tint = color,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
             
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             
+            // Значение
             Text(
                 text = value,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                color = color
             )
             
             Spacer(modifier = Modifier.height(4.dp))
             
+            // Заголовок
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
         }
     }
@@ -430,21 +487,26 @@ fun PieChartLegendItem(
     ) {
         Box(
             modifier = Modifier
-                .size(12.dp)
-                .padding(end = 4.dp)
-                .background(color = color, shape = MaterialTheme.shapes.small)
+                .size(16.dp)
+                .clip(MaterialTheme.shapes.small)
+                .background(color)
         )
         
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.weight(1f)
-        )
+        Spacer(modifier = Modifier.width(8.dp))
         
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold
-        )
+        Column {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Medium
+                )
+            )
+            
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+            )
+        }
     }
 } 

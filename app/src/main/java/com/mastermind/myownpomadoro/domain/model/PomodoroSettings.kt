@@ -18,5 +18,6 @@ data class PomodoroSettings(
     val isDarkThemeEnabled: Boolean = false,
     val useSystemTheme: Boolean = true,
     val keepScreenOn: Boolean = true,
-    val language: String = "system" // "system", "en", "ru"
+    val language: String = "system", // "system", "en", "ru"
+    val onboardingCompleted: Boolean = false
 ) 

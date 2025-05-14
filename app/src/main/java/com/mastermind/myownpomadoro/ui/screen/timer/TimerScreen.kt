@@ -1,7 +1,12 @@
 package com.mastermind.myownpomadoro.ui.screen.timer
 
 import android.content.Intent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,9 +17,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +38,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -48,7 +62,6 @@ fun TimerScreen(
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     
-    // Запускаем сервис при изменении состояния таймера
     LaunchedEffect(uiState.timerState) {
         val intent = Intent(context, PomodoroTimerService::class.java)
         
@@ -82,40 +95,90 @@ fun TimerScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Заголовок текущего периода
-            Text(
-                text = getPeriodTypeText(uiState.currentPeriodType),
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            // Счетчик завершенных помидоров
-            Text(
-                text = stringResource(
-                    R.string.completed_pomodoros, 
-                    uiState.completedWorkPeriods
-                ),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-            )
+            ElevatedCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp),
+                colors = CardDefaults.elevatedCardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = getPeriodTypeText(uiState.currentPeriodType),
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = getColorForPeriodType(uiState.currentPeriodType)
+                    )
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        val completedCount = uiState.completedWorkPeriods
+                        
+                        for (i in 0 until 4) {
+                            Box(
+                                modifier = Modifier
+                                    .padding(horizontal = 4.dp)
+                                    .size(24.dp)
+                                    .clip(CircleShape)
+                                    .background(
+                                        if (i < completedCount % 4) 
+                                            MaterialTheme.colorScheme.primary 
+                                        else 
+                                            MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+                                    )
+                            ) {}
+                        }
+                        
+                        Spacer(modifier = Modifier.width(16.dp))
+                        
+                        Text(
+                            text = stringResource(
+                                R.string.completed_pomodoros, 
+                                uiState.completedWorkPeriods
+                            ),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                        )
+                    }
+                }
+            }
             
             Spacer(modifier = Modifier.height(32.dp))
             
-            // Таймер с круговым прогресс-баром
             Box(
-                modifier = Modifier.size(300.dp),
+                modifier = Modifier.size(280.dp),
                 contentAlignment = Alignment.Center
             ) {
-                // Анимированный прогресс
                 val progress by animateFloatAsState(
                     targetValue = if (uiState.totalTime.seconds > 0) {
                         uiState.remainingTime.seconds.toFloat() / uiState.totalTime.seconds.toFloat()
                     } else {
                         0f
                     },
+                    animationSpec = tween(300),
                     label = "progress"
+                )
+                
+                CircularProgressIndicator(
+                    progress = { 1f },
+                    modifier = Modifier.fillMaxSize(),
+                    strokeWidth = 12.dp,
+                    color = getColorForPeriodType(uiState.currentPeriodType).copy(alpha = 0.2f)
                 )
                 
                 CircularProgressIndicator(
@@ -125,37 +188,65 @@ fun TimerScreen(
                     color = getColorForPeriodType(uiState.currentPeriodType)
                 )
                 
-                // Оставшееся время
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Card(
+                    modifier = Modifier
+                        .size(220.dp)
+                        .shadow(8.dp, CircleShape)
+                        .clip(CircleShape),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    )
                 ) {
-                    val minutes = uiState.remainingTime.toMinutes()
-                    val seconds = uiState.remainingTime.minusMinutes(minutes).seconds
-                    
-                    Text(
-                        text = String.format("%02d:%02d", minutes, seconds),
-                        fontSize = 48.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                    
-                    Text(
-                        text = getTimerStateText(uiState.timerState),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-                        modifier = Modifier.alpha(0.7f)
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            val minutes = uiState.remainingTime.toMinutes()
+                            val seconds = uiState.remainingTime.minusMinutes(minutes).seconds
+                            
+                            Text(
+                                text = String.format("%02d:%02d", minutes, seconds),
+                                fontSize = 56.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = getColorForPeriodType(uiState.currentPeriodType)
+                            )
+                            
+                            Text(
+                                text = getTimerStateText(uiState.timerState),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                            )
+                        }
+                    }
                 }
             }
             
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(40.dp))
             
-            // Кнопки управления
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                // Кнопка старт/пауза
+                OutlinedButton(
+                    onClick = { viewModel.resetTimer() },
+                    modifier = Modifier.size(56.dp),
+                    shape = CircleShape,
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onSurface
+                    )
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_reset),
+                        contentDescription = stringResource(R.string.reset),
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+                
                 Button(
                     onClick = {
                         if (uiState.timerState == TimerState.RUNNING) {
@@ -164,60 +255,67 @@ fun TimerScreen(
                             viewModel.startTimer()
                         }
                     },
-                    modifier = Modifier.size(64.dp),
-                    shape = MaterialTheme.shapes.large
+                    modifier = Modifier.size(72.dp),
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = getColorForPeriodType(uiState.currentPeriodType)
+                    )
                 ) {
                     Icon(
-                        painter = painterResource(
-                            id = if (uiState.timerState == TimerState.RUNNING) {
-                                R.drawable.ic_pause
-                            } else {
-                                R.drawable.ic_play
-                            }
-                        ),
+                        painter = if (uiState.timerState == TimerState.RUNNING) {
+                            painterResource(id = R.drawable.ic_pause)
+                        } else {
+                            painterResource(id = R.drawable.ic_play)
+                        },
                         contentDescription = if (uiState.timerState == TimerState.RUNNING) {
                             stringResource(R.string.pause)
                         } else {
                             stringResource(R.string.start)
-                        }
+                        },
+                        modifier = Modifier.size(32.dp)
                     )
                 }
                 
-                // Кнопка сброса
-                OutlinedButton(
-                    onClick = { viewModel.resetTimer() },
-                    modifier = Modifier.size(64.dp),
-                    shape = MaterialTheme.shapes.large
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_reset),
-                        contentDescription = stringResource(R.string.reset)
-                    )
-                }
-                
-                // Кнопка пропуска
                 FilledTonalButton(
                     onClick = { viewModel.skipToNextPeriod() },
-                    modifier = Modifier.size(64.dp),
-                    shape = MaterialTheme.shapes.large
+                    modifier = Modifier.size(56.dp),
+                    shape = CircleShape,
+                    colors = ButtonDefaults.filledTonalButtonColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
+                    )
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_skip),
-                        contentDescription = stringResource(R.string.skip)
+                        contentDescription = stringResource(R.string.skip),
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }
             
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
             
-            // Описание текущего режима
-            Text(
-                text = getPeriodDescription(uiState.currentPeriodType),
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-                modifier = Modifier.padding(horizontal = 32.dp)
-            )
+            AnimatedVisibility(
+                visible = true,
+                enter = fadeIn(animationSpec = tween(500)),
+                exit = fadeOut(animationSpec = tween(500))
+            ) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = getColorForPeriodType(uiState.currentPeriodType).copy(alpha = 0.1f)
+                    )
+                ) {
+                    Text(
+                        text = getPeriodDescription(uiState.currentPeriodType),
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
         }
     }
 }
@@ -255,4 +353,4 @@ private fun getColorForPeriodType(periodType: PeriodType) = when (periodType) {
     PeriodType.WORK -> MaterialTheme.colorScheme.primary
     PeriodType.SHORT_BREAK -> MaterialTheme.colorScheme.secondary
     PeriodType.LONG_BREAK -> MaterialTheme.colorScheme.tertiary
-} 
+}

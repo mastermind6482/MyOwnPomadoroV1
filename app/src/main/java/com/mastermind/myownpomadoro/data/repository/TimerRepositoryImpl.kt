@@ -1,7 +1,6 @@
 package com.mastermind.myownpomadoro.data.repository
 
 import com.mastermind.myownpomadoro.domain.model.PeriodType
-import com.mastermind.myownpomadoro.domain.model.PomodoroSettings
 import com.mastermind.myownpomadoro.domain.model.PomodoroState
 import com.mastermind.myownpomadoro.domain.model.TimerState
 import com.mastermind.myownpomadoro.domain.repository.SettingsRepository
@@ -10,7 +9,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
@@ -98,7 +96,6 @@ class TimerRepositoryImpl @Inject constructor(
     override suspend fun updateRemainingTime(time: Duration) {
         _timerState.update { it.copy(remainingTime = time) }
         
-        // Если время закончилось, обновляем состояние
         if (time.isZero || time.isNegative) {
             _timerState.update { it.copy(timerState = TimerState.COMPLETED) }
         }
@@ -142,7 +139,6 @@ class TimerRepositoryImpl @Inject constructor(
             PeriodType.SHORT_BREAK, PeriodType.LONG_BREAK -> PeriodType.WORK
         }
         
-        // Обновляем тип периода
         updatePeriodType(nextPeriodType)
         
         // Автоматически запускаем следующий период, если это настроено
